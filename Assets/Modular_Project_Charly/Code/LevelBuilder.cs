@@ -87,8 +87,15 @@ namespace ProceduralLevelDesign
                     moduleInstance.transform.position = modulePosition;
 
                     _allModulesInScene.Add(moduleInstance.GetComponent<Module>());
+                    moduleInstance.GetComponent<Module>()._levelBuilder = this;
+                    moduleInstance.GetComponent<Module>().ModulePos = modulePosition;
                 }
             }
+        }
+
+        public void ChangeModuleStyle()
+        {
+            Debug.Log("Cambio de Modulo");
         }
 
         #endregion

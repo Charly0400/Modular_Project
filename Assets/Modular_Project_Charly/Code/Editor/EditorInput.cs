@@ -41,6 +41,11 @@ namespace ProceduralLevelDesign
                 levelBuilder?.CreateModule(e.mousePosition);
             }
 
+            if(e.type == EventType.KeyUp && e.keyCode == KeyCode.Tab)
+            {
+                levelBuilder?.ChangeModuleStyle();
+            }
+
         }
 
         #endregion
