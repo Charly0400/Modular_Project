@@ -60,7 +60,7 @@ namespace ProceduralLevelDesign
             Debug.DrawRay(rayFromSceneCamera.origin, rayFromSceneCamera.direction * 10000f, Color.red, 5f);
             if (Physics.Raycast(rayFromSceneCamera, out raycastHit, 100000f))
             {
-                if (raycastHit.collider.gameObject.layer == 6) //Layer -> Layout
+                if (raycastHit.collider.gameObject.layer == 3) //Layer -> Layout
                 {
                     moduleInstance = raycastHit.collider.transform.parent.parent.gameObject;
                     _allModulesInScene.Remove(moduleInstance.GetComponent<Module>());
@@ -76,10 +76,8 @@ namespace ProceduralLevelDesign
             Debug.DrawRay(rayFromSceneCamera.origin, rayFromSceneCamera.direction * 10000f, Color.magenta, 5f);
             if (Physics.Raycast(rayFromSceneCamera, out raycastHit, 10000f))
             {
-                Debug.Log("Ray");
                 if (raycastHit.collider.gameObject.layer == 6) //Layer -> Layout
                 {
-                    Debug.Log("hola");
                     moduleInstance = Instantiate(_modulePrefab);
                     moduleInstance.transform.parent = transform;
                     modulePosition = raycastHit.point;
