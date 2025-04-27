@@ -37,10 +37,10 @@ namespace ProceduralLevelDesign {
 
             directions = new Vector3[]
             {
-                transform.right,    //Derecha
-                -transform.right,   //Izquierda
-                transform.forward,  //Arriba
-                -transform.forward  //Abajo
+                transform.right,    
+                -transform.right,
+                transform.forward,  
+                -transform.forward  
             };
 
             CheckPillars();
@@ -69,11 +69,10 @@ namespace ProceduralLevelDesign {
                 Vector3 rayOrigin = modulesPrefabs.pillars[i].transform.position + Vector3.up * verticalPillarOffset;
                 bool foundAnyWAll = false;
 
-                // Lanzar rayos en las 4 direcciones desde el pilar
                 for (int dir = 0; dir < directions.Length; dir++) {
                     if (Physics.Raycast(rayOrigin, directions[dir], rayDistancePillars, pillarLayer)) { 
                         foundAnyWAll = true;
-                        break; // Si cualquier rayo no golpea, desactivamos
+                        break;
                     }
                 }
 
