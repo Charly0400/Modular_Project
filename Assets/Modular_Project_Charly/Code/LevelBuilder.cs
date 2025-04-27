@@ -58,13 +58,18 @@ namespace ProceduralLevelDesign
             //Debug.Log(this.name + " - " + gameObject.name + " DeleteModule( " + value.ToString() + ")", gameObject);
             rayFromSceneCamera = HandleUtility.GUIPointToWorldRay(value); //Camera.main.ScreenPointToRay(value);
             Debug.DrawRay(rayFromSceneCamera.origin, rayFromSceneCamera.direction * 10000f, Color.red, 5f);
-            if (Physics.Raycast(rayFromSceneCamera, out raycastHit, 100000f))
-            {
+            if (Physics.Raycast(rayFromSceneCamera, out raycastHit, 100000f)) {
                 if (raycastHit.collider.gameObject.layer == 3) //Layer -> Layout
                 {
                     moduleInstance = raycastHit.collider.transform.parent.parent.gameObject;
                     _allModulesInScene.Remove(moduleInstance.GetComponent<Module>());
                     DestroyImmediate(moduleInstance);
+
+                    Physics.SyncTransforms();
+
+                    foreach (Module module in _allModulesInScene) {
+                        module.GetComponent<Module>().CheckNeighbors();
+                    }
                 }
             }
         }
@@ -74,8 +79,7 @@ namespace ProceduralLevelDesign
             Debug.Log(this.name + " - " + gameObject.name + " CreateModule( " + value.ToString() + ")", gameObject);
             rayFromSceneCamera = HandleUtility.GUIPointToWorldRay(value); //Camera.main.ScreenPointToRay(value);
             Debug.DrawRay(rayFromSceneCamera.origin, rayFromSceneCamera.direction * 10000f, Color.magenta, 5f);
-            if (Physics.Raycast(rayFromSceneCamera, out raycastHit, 10000f))
-            {
+            if (Physics.Raycast(rayFromSceneCamera, out raycastHit, 10000f)) {
                 if (raycastHit.collider.gameObject.layer == 6) //Layer -> Layout
                 {
                     moduleInstance = Instantiate(_modulePrefab);
@@ -89,6 +93,12 @@ namespace ProceduralLevelDesign
                     _allModulesInScene.Add(moduleInstance.GetComponent<Module>());
                     moduleInstance.GetComponent<Module>()._levelBuilder = this;
                     moduleInstance.GetComponent<Module>().ModulePos = modulePosition;
+
+                    Physics.SyncTransforms();
+
+                    foreach (Module module in _allModulesInScene) {
+                        module.GetComponent<Module>().CheckNeighbors();
+                    }
                 }
             }
         }

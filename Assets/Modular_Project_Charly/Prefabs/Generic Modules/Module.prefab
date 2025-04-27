@@ -84,6 +84,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b45f0469ab99aa04b8d174d548699803, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _levelBuilder: {fileID: 0}
+  ModulePos: {x: 0, y: 0, z: 0}
+  modulesPrefabs:
+    pillar1: {fileID: 0}
+    pillar2: {fileID: 0}
+    pillar3: {fileID: 0}
+    pillar4: {fileID: 0}
+    wall1: {fileID: 0}
+    wall2: {fileID: 0}
+    wall3: {fileID: 0}
+    wall4: {fileID: 0}
+  rayDistance: 1.1
+  moduleLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  centerOffset: {x: 0.5, y: 0, z: 0.5}
 --- !u!1 &3271163096615994801
 GameObject:
   m_ObjectHideFlags: 0
@@ -94,7 +110,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6779092311742175848}
   m_Layer: 0
-  m_Name: 01 Wall
+  m_Name: 01 Wall_U
   m_TagString: Untagged
   m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -125,7 +141,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2272459363623046378}
   m_Layer: 0
-  m_Name: 03 Wall
+  m_Name: 03 Wall_D
   m_TagString: Untagged
   m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -187,7 +203,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2492735756519268247}
   m_Layer: 0
-  m_Name: 00 Wall
+  m_Name: 00 Wall_L
   m_TagString: Untagged
   m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -218,7 +234,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2784294085486744794}
   m_Layer: 0
-  m_Name: 02 Wall
+  m_Name: 02 Wall_R
   m_TagString: Untagged
   m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
