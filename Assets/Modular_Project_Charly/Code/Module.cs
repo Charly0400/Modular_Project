@@ -9,13 +9,18 @@ namespace ProceduralLevelDesign {
 
     public class Module : MonoBehaviour {
         #region Variables
+
         public LevelBuilder _levelBuilder;
         public Vector3 ModulePos;
 
+        [Header("Prefabs")]
         public ModulesPrefabs modulesPrefabs;
 
+        [Header("Ray Distance Settings")]
         public float rayDistanceModule = 1.1f;
         public float rayDistancePillars = 1.1f;
+
+        [Header("Layers")]
         public LayerMask moduleLayer;
         public LayerMask pillarLayer;
 
