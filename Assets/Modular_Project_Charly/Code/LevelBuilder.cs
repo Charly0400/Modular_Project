@@ -66,10 +66,7 @@ namespace ProceduralLevelDesign
                     DestroyImmediate(moduleInstance);
 
                     Physics.SyncTransforms();
-
-                    foreach (Module module in _allModulesInScene) {
-                        module.GetComponent<Module>().CheckNeighbors();
-                    }
+                    Invoke("CheckWallsAndPillars", 0.5f);
                 }
             }
         }
@@ -95,13 +92,21 @@ namespace ProceduralLevelDesign
                     moduleInstance.GetComponent<Module>().ModulePos = modulePosition;
 
                     Physics.SyncTransforms();
+                    Invoke("CheckWallsAndPillars", 0.65f);
 
-                    foreach (Module module in _allModulesInScene) {
-                        module.GetComponent<Module>().CheckNeighbors();
-                    }
                 }
             }
         }
+
+        protected void CheckWallsAndPillars()
+        {
+            foreach (Module module in _allModulesInScene)
+            {
+                module.GetComponent<Module>().CheckNeighbors();
+            }
+        }
+
+
 
         public void ChangeModuleStyle()
         {

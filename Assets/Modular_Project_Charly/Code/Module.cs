@@ -14,7 +14,7 @@ namespace ProceduralLevelDesign {
 
         public ModulesPrefabs modulesPrefabs;
 
-        public float rayDistanceWalls = 1.1f;
+        public float rayDistanceModule = 1.1f;
         public float rayDistancePillars = 1.1f;
         public LayerMask moduleLayer;
         public LayerMask pillarLayer;
@@ -52,7 +52,7 @@ namespace ProceduralLevelDesign {
         private void CheckWalls() {
             Vector3 rayOrigin = transform.position + centerOffset;
             for (int i = 0; i < directions.Length; i++) {
-                if (Physics.Raycast(rayOrigin, directions[i], out RaycastHit hit, rayDistanceWalls, moduleLayer)) {
+                if (Physics.Raycast(rayOrigin, directions[i], out RaycastHit hit, rayDistanceModule, moduleLayer)) {
                     if (modulesPrefabs.walls[i] != null)
                         modulesPrefabs.walls[i].SetActive(false);
                 }
@@ -97,19 +97,14 @@ namespace ProceduralLevelDesign {
             Gizmos.color = Color.green;
             Vector3 rayOrigin = transform.position + centerOffset;
 
-            // Dibujar rayos de paredes
             foreach (var dir in directions) {
-                Gizmos.DrawRay(rayOrigin, dir.normalized * rayDistanceWalls);
+                Gizmos.DrawRay(rayOrigin, dir.normalized * rayDistanceModule);
             }
-
-            // Dibujar rayos de pilares
 
             for (int i = 0; i < modulesPrefabs.pillars.Length; i++) {
 
-
                 Vector3 pillarPos = modulesPrefabs.pillars[i].transform.position + Vector3.up * verticalPillarOffset;
 
-                // Verificar si detecta paredes para cambiar color
                 foreach (var dir in directions) {
                     if (Physics.Raycast(pillarPos, dir, rayDistancePillars, pillarLayer)) {
                         Gizmos.color = Color.cyan;
