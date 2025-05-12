@@ -185,9 +185,12 @@ namespace ProceduralLevelDesign
             if (!mazmorra.isSlisableY && !mazmorra.isSlisableX)
             {
                 _DungeonsOnScene.Add(mazmorra);
-                //foreach (Module module in _DungeonsOnScene )
+                //foreach (Mazmorra masZorra in _DungeonsOnScene)
                 //{
-                    
+                //    foreach (Module module in masZorra)
+                //    {
+                //        module.GetComponent<Module>().CheckNeighbors();
+                //    }
                 //}
                 return;
             }
