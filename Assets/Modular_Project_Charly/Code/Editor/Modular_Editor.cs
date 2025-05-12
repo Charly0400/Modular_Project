@@ -29,6 +29,8 @@ public class Modular_Editor : Editor
         }
 
         if (GUILayout.Button("Binary Spacing")) {
+            _levelBuilder.ClearLevel();
+            _levelBuilder.ProbbingModules();
 
             Mazmorra mazmorra = new Mazmorra() {
                 min_X = 0,
@@ -38,6 +40,7 @@ public class Modular_Editor : Editor
             };
 
             _levelBuilder.BinarySpacePartition(mazmorra);
+            _levelBuilder.CheckWallsAndPillars();
 
             //_levelBuilder.StartPartition();
         }

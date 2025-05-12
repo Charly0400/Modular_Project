@@ -47,15 +47,17 @@ namespace ProceduralLevelDesign
                 levelBuilder?.ChangeModuleStyle();
             }
 
-            if (e.type == EventType.KeyUp && e.keyCode == KeyCode.A) {
+            if (e.type == EventType.KeyUp && e.keyCode == KeyCode.P) {
                 Mazmorra mazmorra = new Mazmorra() {
                     min_X = 0,
                     min_Y = 0,
                     max_X = levelBuilder.sizeX,
                     max_Y = levelBuilder.sizeY,
                 };
-
+                levelBuilder?.ClearLevel();
+                levelBuilder?.ProbbingModules();
                 levelBuilder?.BinarySpacePartition(mazmorra);
+                levelBuilder?.CheckWallsAndPillars();
             }
         }
 
