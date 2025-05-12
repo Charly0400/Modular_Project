@@ -1,11 +1,14 @@
 using UnityEngine;
 
 namespace ProceduralLevelDesign {
+
+    #region Structs
     [System.Serializable]
     public struct ModulesPrefabs {
         public GameObject[] pillars;
         public GameObject[] walls;
-    }
+    } 
+    #endregion
 
     public class Module : MonoBehaviour {
         #region Variables
