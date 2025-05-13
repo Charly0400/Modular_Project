@@ -32,6 +32,9 @@ namespace ProceduralLevelDesign {
         [Header("Center Offset Settings")]
         public Vector3 centerOffset = new Vector3(0.5f, 0, 0.5f);
         public float verticalPillarOffset = 0.5f;
+
+        [Header("Check if its on Dungeon")]
+        public bool isInDungeon = false;
         #endregion
 
         #region Unity Methods
