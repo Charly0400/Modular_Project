@@ -42,11 +42,6 @@ namespace ProceduralLevelDesign
                 levelBuilder?.CreateModule(e.mousePosition);
             }
 
-            if (e.type == EventType.KeyUp && e.keyCode == KeyCode.Tab)
-            {
-                levelBuilder?.ChangeModuleStyle();
-            }
-
             if (e.type == EventType.KeyUp && e.keyCode == KeyCode.P) {
                 Mazmorra mazmorra = new Mazmorra() {
                     min_X = 0,

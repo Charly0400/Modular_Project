@@ -92,7 +92,7 @@ namespace ProceduralLevelDesign {
         }
 
         #endregion
-
+         
         #region Gizmos
         private void OnDrawGizmos() {
             if (directions == null || directions.Length == 0) {

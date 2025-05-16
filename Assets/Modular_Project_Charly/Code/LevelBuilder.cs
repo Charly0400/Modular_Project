@@ -59,8 +59,6 @@ namespace ProceduralLevelDesign {
         protected GameObject moduleInstance;
         [SerializeField] protected Vector3 modulePosition;
 
-        [SerializeField] protected bool _isRecursivityDone;
-
         [Header("Probing Settings")]
         [SerializeField] public int sizeX = 10;
         [SerializeField] public int sizeY = 10;
@@ -69,14 +67,12 @@ namespace ProceduralLevelDesign {
         [SerializeField] protected int minDoungeonY = 1;
 
         #region Internal Data
-        [Header("Dungeons")]
-
 
         [Header("Modules")]
         [SerializeField] protected List<Module> _allModulesInScene;
         [SerializeField] protected List<Mazmorra> _DungeonsOnScene;
 
-        protected List<GameObject> _dungeonsParents;
+        [SerializeField] protected List<GameObject> _dungeonsParents;
 
         #endregion
 
@@ -98,7 +94,7 @@ namespace ProceduralLevelDesign {
             foreach (GameObject go in _dungeonsParents) {
                 DestroyImmediate(go);
             }
-
+             
             _allModulesInScene.Clear();
             _DungeonsOnScene.Clear();
             _dungeonsParents.Clear();
@@ -160,9 +156,6 @@ namespace ProceduralLevelDesign {
             }
         }
 
-        public void ChangeModuleStyle() {
-            Debug.Log("Cambio de Modulo");
-        } 
         #endregion
 
         #endregion
@@ -187,21 +180,21 @@ namespace ProceduralLevelDesign {
         }
         private void GroupUnusedModules() {
             GameObject existing = GameObject.Find("ModulosSinMazmorra");
-            GameObject trashGroup = existing != null ? existing : new GameObject("ModulosSinMazmorra");
+            GameObject unusedModules = existing != null ? existing : new GameObject("ModulosSinMazmorra");
 
-            trashGroup.transform.parent = this.transform;
+            unusedModules.transform.parent = this.transform;
 
             foreach (Module module in _allModulesInScene) {
                 if (!module.isInDungeon) {
-                    module.transform.parent = trashGroup.transform;
+                    module.transform.parent = unusedModules.transform;
                 }
             }
-            if (!_dungeonsParents.Contains(trashGroup)) {
-                _dungeonsParents.Add(trashGroup);
+            if (!_dungeonsParents.Contains(unusedModules)) {
+                _dungeonsParents.Add(unusedModules);
             }
 
         }
-        private void ReplaceModulesInDungeon(Mazmorra mazmorra) {
+        private void GroupAndReplaceModulesInDungeon(Mazmorra mazmorra) {
             GameObject dungeonGroup = new GameObject("Mazmorra_" + _DungeonsOnScene.Count);
             dungeonGroup.transform.parent = this.transform;
 
@@ -212,11 +205,12 @@ namespace ProceduralLevelDesign {
                 if (pos.x >= mazmorra.min_X && pos.x <= mazmorra.max_X &&
                     pos.z >= mazmorra.min_Y && pos.z <= mazmorra.max_Y) {
 
-                    // Reemplazar el módulo con uno de diseño distinto
                     GameObject newInstance = Instantiate(selectedPrefab, pos, Quaternion.identity);
+
                     newInstance.transform.parent = dungeonGroup.transform;
 
                     Module newModule = newInstance.GetComponent<Module>();
+                    newModule.isInDungeon = true;
                     newModule._levelBuilder = this;
                     newModule.ModulePos = pos;
 
@@ -226,11 +220,12 @@ namespace ProceduralLevelDesign {
                     _allModulesInScene.Add(newModule);
                 }
             }
+            _dungeonsParents.Add(dungeonGroup);
         }
         #endregion
 
         #region Recursivity
-        public void BinarySpacePartition(Mazmorra mazmorra) //, Vector2 cut, bool previousAxisCut)
+        public void BinarySpacePartition(Mazmorra mazmorra/*, int cut, bool previousAxisCut*/)
         {
             Debug.Log("BinarySpacePartition() " + mazmorra.PrintMazmorra());
             //Tenemos que determinar si se puede hacer un corte horizontal
@@ -244,9 +239,8 @@ namespace ProceduralLevelDesign {
 
             if (!mazmorra.isSlisableY && !mazmorra.isSlisableX) {
                 _DungeonsOnScene.Add(mazmorra);
-                GroupModulesInDungeon(mazmorra);
-                //ReplaceModulesInDungeon(mazmorra);
-                _isRecursivityDone = true;
+                //GroupModulesInDungeon(mazmorra);
+                GroupAndReplaceModulesInDungeon(mazmorra);
                 GroupUnusedModules();
                 CheckWallsAndPillars();
                 return;
@@ -272,12 +266,9 @@ namespace ProceduralLevelDesign {
             #region Check On Width and Cuts On Height 
 
             if (mazmorra.isSlisableX && !mazmorra.isSlisableY) {
-                int RandomCut = Random.Range(mazmorra.min_X + minDoungeonX + 1,
-                                mazmorra.max_X - minDoungeonX - 1);
-
-                //for (int i = mazmorra.min_Y; i <= mazmorra.max_Y; i++) {
-                //    matrix[RandomCut, i].gameObject.SetActive(false);
-                //}
+                int RandomCut = Random.Range(mazmorra.min_X + minDoungeonX + 1, mazmorra.max_X - minDoungeonX - 1);
+                //cut = RandomCut;
+                
                 foreach (Module module in _allModulesInScene) {
                     if (module.ModulePos.x == RandomCut) {
                         if (module.ModulePos.z >= mazmorra.min_Y && module.ModulePos.z <= mazmorra.max_Y) {
