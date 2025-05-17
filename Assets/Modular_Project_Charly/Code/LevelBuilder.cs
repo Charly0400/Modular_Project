@@ -94,7 +94,7 @@ namespace ProceduralLevelDesign {
             foreach (GameObject go in _dungeonsParents) {
                 DestroyImmediate(go);
             }
-             
+
             _allModulesInScene.Clear();
             _DungeonsOnScene.Clear();
             _dungeonsParents.Clear();
@@ -161,23 +161,6 @@ namespace ProceduralLevelDesign {
         #endregion
 
         #region Private Methods
-        private void GroupModulesInDungeon(Mazmorra mazmorra) {
-            GameObject dungeonGroup = new GameObject("Mazmorra_" + _DungeonsOnScene.Count);
-            dungeonGroup.transform.parent = this.transform;
-
-            GameObject selectedPrefab = _modulePrefab[Random.Range(0, _modulePrefab.Length)];
-
-            foreach (Module module in _allModulesInScene) {
-                Vector3 pos = module.ModulePos;
-                if (pos.x >= mazmorra.min_X && pos.x <= mazmorra.max_X &&
-                    pos.z >= mazmorra.min_Y && pos.z <= mazmorra.max_Y) {
-
-                    module.isInDungeon = true;
-                    module.transform.parent = dungeonGroup.transform;
-                }
-            }
-            _dungeonsParents.Add(dungeonGroup);
-        }
         private void GroupUnusedModules() {
             GameObject existing = GameObject.Find("ModulosSinMazmorra");
             GameObject unusedModules = existing != null ? existing : new GameObject("ModulosSinMazmorra");
@@ -225,8 +208,7 @@ namespace ProceduralLevelDesign {
         #endregion
 
         #region Recursivity
-        public void BinarySpacePartition(Mazmorra mazmorra/*, int cut, bool previousAxisCut*/)
-        {
+        public void BinarySpacePartition(Mazmorra mazmorra/*, int cut, bool previousAxisCut*/) {
             Debug.Log("BinarySpacePartition() " + mazmorra.PrintMazmorra());
             //Tenemos que determinar si se puede hacer un corte horizontal
             if (mazmorra.Width() > minDoungeonX * 2) {
@@ -239,7 +221,6 @@ namespace ProceduralLevelDesign {
 
             if (!mazmorra.isSlisableY && !mazmorra.isSlisableX) {
                 _DungeonsOnScene.Add(mazmorra);
-                //GroupModulesInDungeon(mazmorra);
                 GroupAndReplaceModulesInDungeon(mazmorra);
                 GroupUnusedModules();
                 CheckWallsAndPillars();
@@ -268,7 +249,8 @@ namespace ProceduralLevelDesign {
             if (mazmorra.isSlisableX && !mazmorra.isSlisableY) {
                 int RandomCut = Random.Range(mazmorra.min_X + minDoungeonX + 1, mazmorra.max_X - minDoungeonX - 1);
                 //cut = RandomCut;
-                
+                int connectionRoomIndex = Random.Range(mazmorra.min_Y, mazmorra.max_Y);
+
                 foreach (Module module in _allModulesInScene) {
                     if (module.ModulePos.x == RandomCut) {
                         if (module.ModulePos.z >= mazmorra.min_Y && module.ModulePos.z <= mazmorra.max_Y) {
@@ -277,7 +259,6 @@ namespace ProceduralLevelDesign {
                     }
                 }
 
-                int connectionRoomIndex = Random.Range(mazmorra.min_Y, mazmorra.max_Y);
                 foreach (Module module in _allModulesInScene) {
                     if (module.ModulePos.x == RandomCut && module.ModulePos.z == connectionRoomIndex) {
                         module.gameObject.SetActive(true);
@@ -308,9 +289,9 @@ namespace ProceduralLevelDesign {
             #region Check On Height and Cuts On Width 
 
             else if (!mazmorra.isSlisableX && mazmorra.isSlisableY) {
-                int RandomCut = Random.Range(mazmorra.min_Y + minDoungeonY + 1,
-                                mazmorra.max_Y - minDoungeonY - 1);
+                int RandomCut = Random.Range(mazmorra.min_Y + minDoungeonY + 1, mazmorra.max_Y - minDoungeonY - 1);
 
+                int connectionRoomIndex = Random.Range(mazmorra.min_X, mazmorra.max_X);
                 //for (int i = mazmorra.min_Y; i <= mazmorra.max_Y; i++) {
                 //    matrix[RandomCut, i].gameObject.SetActive(false);
                 //}
@@ -322,7 +303,6 @@ namespace ProceduralLevelDesign {
                     }
                 }
 
-                int connectionRoomIndex = Random.Range(mazmorra.min_X, mazmorra.max_X);
                 foreach (Module module in _allModulesInScene) {
                     if (module.ModulePos.z == RandomCut && module.ModulePos.x == connectionRoomIndex) {
                         module.gameObject.SetActive(true);
@@ -361,7 +341,7 @@ namespace ProceduralLevelDesign {
         public void ProbbingModules() {
 
             Vector3 startPosition = transform.position - new Vector3(0f, 0f, 0f);
-            GameObject prefab = _modulePrefab[0]; 
+            GameObject prefab = _modulePrefab[0];
             for (int x = 0; x < sizeX; x++) {
                 for (int z = 0; z < sizeX; z++) {
                     Vector3 moduleStartPosition = startPosition + new Vector3(x, 0, z);
