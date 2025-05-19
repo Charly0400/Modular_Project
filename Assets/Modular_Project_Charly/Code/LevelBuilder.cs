@@ -241,7 +241,6 @@ namespace ProceduralLevelDesign {
                     mazmorra.isSlisableX = false;
                     mazmorra.isSlisableY = true;
                 }
-
             }
 
             #region Check On Width and Cuts On Height 
