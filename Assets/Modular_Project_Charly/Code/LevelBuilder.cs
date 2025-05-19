@@ -45,6 +45,17 @@ namespace ProceduralLevelDesign {
 
     #endregion
 
+    #region Enums
+
+    public enum PreviousCut
+    {
+        HORIZONTAL,
+        VERTICAL,
+        NONE
+    }
+
+    #endregion
+
     public class LevelBuilder : MonoBehaviour, ILevelEditor {
         #region Parameters
 
@@ -205,11 +216,17 @@ namespace ProceduralLevelDesign {
             }
             _dungeonsParents.Add(dungeonGroup);
         }
+
+        private void TurnOnForConnection()
+        {
+
+        }
+
         #endregion
 
         #region Recursivity
-        public void BinarySpacePartition(Mazmorra mazmorra/*, int cut, bool previousAxisCut*/) {
-            Debug.Log("BinarySpacePartition() " + mazmorra.PrintMazmorra());
+        public void BinarySpacePartition(Mazmorra mazmorra, int cut, PreviousCut previousCut) {
+            Debug.Log(previousCut);
             //Tenemos que determinar si se puede hacer un corte horizontal
             if (mazmorra.Width() > minDoungeonX * 2) {
                 mazmorra.isSlisableX = true;
@@ -250,6 +267,21 @@ namespace ProceduralLevelDesign {
                 //cut = RandomCut;
                 int connectionRoomIndex = Random.Range(mazmorra.min_Y, mazmorra.max_Y);
 
+                if (previousCut == PreviousCut.VERTICAL)
+                {
+                    if (( (mazmorra.max_X - minDoungeonX - 1) - (mazmorra.min_X + minDoungeonX + 1) )> 1)
+                    {
+                        while (RandomCut == cut)
+                        {
+                            RandomCut = Random.Range(mazmorra.min_X + minDoungeonX + 1, mazmorra.max_X - minDoungeonX - 1);
+                        }
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
+
                 foreach (Module module in _allModulesInScene) {
                     if (module.ModulePos.x == RandomCut) {
                         if (module.ModulePos.z >= mazmorra.min_Y && module.ModulePos.z <= mazmorra.max_Y) {
@@ -280,8 +312,8 @@ namespace ProceduralLevelDesign {
                     max_Y = mazmorra.max_Y
                 };
 
-                BinarySpacePartition(DungeonA);
-                BinarySpacePartition(DungeonB);
+                BinarySpacePartition(DungeonA, connectionRoomIndex, PreviousCut.HORIZONTAL);
+                BinarySpacePartition(DungeonB, connectionRoomIndex, PreviousCut.HORIZONTAL);
             }
             #endregion
 
@@ -290,10 +322,26 @@ namespace ProceduralLevelDesign {
             else if (!mazmorra.isSlisableX && mazmorra.isSlisableY) {
                 int RandomCut = Random.Range(mazmorra.min_Y + minDoungeonY + 1, mazmorra.max_Y - minDoungeonY - 1);
 
-                int connectionRoomIndex = Random.Range(mazmorra.min_X, mazmorra.max_X);
                 //for (int i = mazmorra.min_Y; i <= mazmorra.max_Y; i++) {
                 //    matrix[RandomCut, i].gameObject.SetActive(false);
                 //}
+                int connectionRoomIndex = Random.Range(mazmorra.min_X, mazmorra.max_X);
+
+                if (previousCut == PreviousCut.HORIZONTAL )
+                {
+                    if (( (mazmorra.max_Y - minDoungeonY - 1) - (mazmorra.min_Y + minDoungeonY + 1) )> 1)
+                    {
+                        while (RandomCut == cut)
+                        {
+                            RandomCut = Random.Range(mazmorra.min_Y + minDoungeonY + 1, mazmorra.max_Y - minDoungeonY - 1);
+                        }
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
+
                 foreach (Module module in _allModulesInScene) {
                     if (module.ModulePos.z == RandomCut) {
                         if (module.ModulePos.x >= mazmorra.min_X && module.ModulePos.x <= mazmorra.max_X) {
@@ -301,6 +349,7 @@ namespace ProceduralLevelDesign {
                         }
                     }
                 }
+
 
                 foreach (Module module in _allModulesInScene) {
                     if (module.ModulePos.z == RandomCut && module.ModulePos.x == connectionRoomIndex) {
@@ -324,8 +373,8 @@ namespace ProceduralLevelDesign {
                     max_Y = mazmorra.max_Y
                 };
 
-                BinarySpacePartition(DungeonA);
-                BinarySpacePartition(DungeonB);
+                BinarySpacePartition(DungeonA, connectionRoomIndex, PreviousCut.VERTICAL);
+                BinarySpacePartition(DungeonB, connectionRoomIndex, PreviousCut.VERTICAL);
 
             }
 

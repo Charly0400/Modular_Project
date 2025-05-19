@@ -51,7 +51,7 @@ namespace ProceduralLevelDesign
                 };
                 levelBuilder?.ClearLevel();
                 levelBuilder?.ProbbingModules();
-                levelBuilder?.BinarySpacePartition(mazmorra);
+                levelBuilder?.BinarySpacePartition(mazmorra, -1, PreviousCut.NONE);
                 levelBuilder?.CheckWallsAndPillars();
             }
         }

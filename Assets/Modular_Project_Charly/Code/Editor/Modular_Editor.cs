@@ -39,7 +39,7 @@ public class Modular_Editor : Editor
                 max_Y = _levelBuilder.sizeY,
             };
 
-            _levelBuilder.BinarySpacePartition(mazmorra);
+            _levelBuilder.BinarySpacePartition(mazmorra, -1, PreviousCut.NONE);
             _levelBuilder.CheckWallsAndPillars();
 
             //_levelBuilder.StartPartition();

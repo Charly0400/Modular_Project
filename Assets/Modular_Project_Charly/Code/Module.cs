@@ -29,12 +29,17 @@ namespace ProceduralLevelDesign {
 
         private Vector3[] directions;
 
+        private Vector3[] directionsForCorridors;
+
         [Header("Center Offset Settings")]
         public Vector3 centerOffset = new Vector3(0.5f, 0, 0.5f);
         public float verticalPillarOffset = 0.5f;
 
         [Header("Check if its on Dungeon")]
         public bool isInDungeon = false;
+
+        [Header("Corridors")]
+        public bool _isCorridor;
         #endregion
 
         #region Unity Methods
